@@ -68,6 +68,15 @@ def main_menu(update:Update, context:CallbackContext):
             btn5 = InlineKeyboardButton('Тилни ўзгартириш/🇷🇺', callback_data='til ru')
             btn = InlineKeyboardMarkup([[btn1,btn2],[btn3,btn4],[btn5]])
             bot.edit_message_text(text, chat_id, message_id=messageid, reply_markup=btn)
+        else:
+            text='Выберите один из разделов'
+            btn1 = InlineKeyboardButton('🕋 Знание времени молитвы', callback_data='menu namoz')
+            btn2 = InlineKeyboardButton('Расчет времени Хиджры', callback_data='menu hijriy')
+            btn3 = InlineKeyboardButton('lorem', callback_data='menu lorem')
+            btn4 = InlineKeyboardButton('Сделать открытку🎉', callback_data='menu tabrik')
+            btn5 = InlineKeyboardButton('Изменить язык/🇺🇿', callback_data='til uz')
+            btn = InlineKeyboardMarkup([[btn1,btn2],[btn3,btn4],[btn5]])
+            bot.edit_message_text(text, chat_id, message_id=messageid, reply_markup=btn)
     db.save()
 
 
