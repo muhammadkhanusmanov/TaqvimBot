@@ -32,3 +32,9 @@ class DB:
     
     def add_lang(self,user_id,lang):
         self.db['users'][user_id]['til']=lang
+    
+    def get_city(self,city):
+        if city is not None:
+            return self.db['shaharlar'][city]
+        else:
+            return self.db['shaharlar'].keys()
