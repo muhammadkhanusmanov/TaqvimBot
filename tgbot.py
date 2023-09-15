@@ -21,9 +21,9 @@ def starting(update: Update, context: CallbackContext):
 
 def tekshir(chat_id,bot):
     data=DB('db.json')
-    kan1=data.kanal()
+    kan1=data.get()
+    kan1=kan1['obuna']
     chan1=bot.getChatMember(f'@{kan1[13:]}',str(chat_id))['status']
-
     if chan1=='left':
         return False
     return True
@@ -35,7 +35,7 @@ def obuna(update:Update, context: CallbackContext):
     message_iid = query.message.message_id
     dt = db.get()
     kanal = dt['obuna']
-    lang = db.get_lang(str(chat_id))
+    lang = query.data.split(' ')[1]
     db.add_lang(str(chat_id),lang)
     if lang=='uz':
         text='Ботдан тўлиқ фойдаланиш учун каналга обуна бўлинг ва текшириш тугмасини босинг.'
@@ -51,6 +51,24 @@ def obuna(update:Update, context: CallbackContext):
         bot.edit_message_text(text,chat_id=chat_id,message_id=message_iid,reply_markup=button)
     db.save()
 
+def main_menu(update:Update, context:CallbackContext):
+    query = update.callback_query
+    chat_id = query.message.chat_id
+    messageid = query.message.message_id
+    bot = context.bot
+    obuna = tekshir(chat_id,bot)
+    til = db.get_lang(str(chat_id))
+    if obuna:
+        if til=='uz':
+            text='Бўлимлардан бирини танланг'
+            btn1 = InlineKeyboardButton('🕋 Намоз вақтини билиш', callback_data='menu namoz')
+            btn2 = InlineKeyboardButton('Ҳижрий вақтни ҳисоблаш', callback_data='menu hijriy')
+            btn3 = InlineKeyboardButton('lorem', callback_data='menu lorem')
+            btn4 = InlineKeyboardButton('Табрик ясаш🎉', callback_data='menu tabrik')
+            btn5 = InlineKeyboardButton('Тилни ўзгартириш/🇷🇺', callback_data='til ru')
+            btn = InlineKeyboardMarkup([[btn1,btn2],[btn3,btn4],[btn5]])
+            bot.edit_message_text(text, chat_id, message_id=messageid, reply_markup=btn)
+    db.save()
 
 
 
@@ -66,6 +84,7 @@ updater=Updater(token)
 
 updater.dispatcher.add_handler(CommandHandler('start',starting))
 updater.dispatcher.add_handler(CallbackQueryHandler(obuna,pattern='til'))
+updater.dispatcher.add_handler(CallbackQueryHandler(main_menu,pattern='obuna'))
 
 
 
