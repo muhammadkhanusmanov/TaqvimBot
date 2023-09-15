@@ -100,6 +100,57 @@ def main_menu(update:Update, context:CallbackContext):
             bot.sendMessage(chat_id,text2,reply_markup=button)
     db.save()
 
+def taqvim(update:Update, context:CallbackContext):
+    query = update.callback_query
+    chat_id = query.message.chat_id
+    messageid = query.message.message_id
+    bot = context.bot
+    obuna = tekshir(chat_id,bot)
+    til = db.get_lang(str(chat_id))
+    kan1 = db.get()
+    kan1 = kan1['obuna']
+    if til=='uz':
+        if obuna:
+            text = "Намоз вақтини олиш учун ўзингизга керакли усулни танланг."
+            rbtn = ReplyKeyboardMarkup([['🏘']])
+            bot.sendMessage(chat_id,text,reply_markup=rbtn)
+            bot.delete_message(chat_id,messageid)
+            text = "Шаҳарлар/Жойлашувлар кесимида намоз вақтини олиш."
+            btn1 = InlineKeyboardButton('Шаҳарлар', callback_data='city vil')
+            btn2 = InlineKeyboardButton('Жойлашув' callback_data='city lok')
+            btn = InlineKeyboardMarkup([[btn1,btn2]])
+            bot.sendMessage(chat_id, text, reply_markup=btn)
+        else:
+            text='Обунада хатолик‼️'
+            text2='Ботдан тўлиқ фойдаланиш учун каналга обуна бўлинг ва текшириш тугмасини босинг.'
+            obuna = InlineKeyboardButton('1-Канал',callback_data='obuna 1', url=kan1)
+            tek=InlineKeyboardButton('Текшириш',callback_data='obuna tek')
+            button=InlineKeyboardMarkup([[obuna],[tek]])
+            bot.delete_message(chat_id,messageid)
+            bot.sendMessage(chat_id,text)
+            bot.sendMessage(chat_id,text2,reply_markup=button)
+    else:
+        if obuna:
+            text = "Выберите метод, который вам нужен, чтобы получить время молитвы."
+            rbtn = ReplyKeyboardMarkup([['🏘']])
+            bot.sendMessage(chat_id,text,reply_markup=rbtn)
+            bot.delete_message(chat_id,messageid)
+            text = "Получите время намаза по разделу «Города/Местоположения»."
+            btn1 = InlineKeyboardButton('Города', callback_data='city vil')
+            btn2 = InlineKeyboardButton('Расположение', callback_data='city lok')
+            btn = InlineKeyboardMarkup([[btn1,btn2]])
+            bot.sendMessage(chat_id, text, reply_markup=btn)
+        else:
+            text='Ошибка подписки‼️'
+            text2='Чтобы полноценно использовать бота, подпишитесь на канал и нажмите кнопку подтверждения.'
+            obuna = InlineKeyboardButton('Канал 1',callback_data='obuna 1', url=kan1)
+            tek=InlineKeyboardButton('Проверять',callback_data='obuna tek')
+            button=InlineKeyboardMarkup([[obuna],[tek]])
+            bot.delete_message(chat_id,messageid)
+            bot.sendMessage(chat_id,text)
+            bot.sendMessage(chat_id,text2,reply_markup=button)
+    db.save()
+
 
 
 
