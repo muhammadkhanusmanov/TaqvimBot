@@ -58,6 +58,8 @@ def main_menu(update:Update, context:CallbackContext):
     bot = context.bot
     obuna = tekshir(chat_id,bot)
     til = db.get_lang(str(chat_id))
+    kan1 = db.get()
+    kan1 = kan1['obuna']
     if obuna:
         if til=='uz':
             text='Бўлимлардан бирини танланг'
@@ -77,6 +79,25 @@ def main_menu(update:Update, context:CallbackContext):
             btn5 = InlineKeyboardButton('Изменить язык/🇺🇿', callback_data='til uz')
             btn = InlineKeyboardMarkup([[btn1,btn2],[btn3,btn4],[btn5]])
             bot.edit_message_text(text, chat_id, message_id=messageid, reply_markup=btn)
+    else:
+        if til=='uz':
+            text='Обунада хатолик‼️'
+            text2='Ботдан тўлиқ фойдаланиш учун каналга обуна бўлинг ва текшириш тугмасини босинг.'
+            obuna = InlineKeyboardButton('1-Канал',callback_data='obuna 1', url=kan1)
+            tek=InlineKeyboardButton('Текшириш',callback_data='obuna tek')
+            button=InlineKeyboardMarkup([[obuna],[tek]])
+            bot.delete_message(chat_id,messageid)
+            bot.sendMessage(chat_id,text)
+            bot.sendMessage(chat_id,text2,reply_markup=button)
+        else:
+            text='Ошибка подписки‼️'
+            text2='Чтобы полноценно использовать бота, подпишитесь на канал и нажмите кнопку подтверждения.'
+            obuna = InlineKeyboardButton('Канал 1',callback_data='obuna 1', url=kan1)
+            tek=InlineKeyboardButton('Проверять',callback_data='obuna tek')
+            button=InlineKeyboardMarkup([[obuna],[tek]])
+            bot.delete_message(chat_id,messageid)
+            bot.sendMessage(chat_id,text)
+            bot.sendMessage(chat_id,text2,reply_markup=button)
     db.save()
 
 
