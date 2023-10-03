@@ -44,5 +44,5 @@ class DB:
         towns = self.db['shaharlar'][city]
         a=[]
         for town in towns:
-            a.append(town[0])
+            a.append(a)
         return a
