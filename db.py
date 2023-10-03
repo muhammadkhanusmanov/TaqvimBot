@@ -33,8 +33,16 @@ class DB:
     def add_lang(self,user_id,lang):
         self.db['users'][user_id]['til']=lang
     
-    def get_city(self,city):
-        if city is not None:
-            return self.db['shaharlar'][city]
-        else:
-            return self.db['shaharlar'].keys()
+    def get_city(self):
+        cities = self.db['shaharlar'].keys()
+        a=[]
+        for city in cities:
+            a.append(city)
+        return a
+    
+    def get_town(self, city):
+        towns = self.db['shaharlar'][city]
+        a=[]
+        for town in towns:
+            a.append(town[0])
+        return a
